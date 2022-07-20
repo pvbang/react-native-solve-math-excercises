@@ -1,0 +1,73 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/fonts/bangers.ttf",
+      "sha1": "9c81590199c778e14e4a7b0e9a7543288779a7ba"
+    },
+    {
+      "path": "src/fonts/lobster.ttf",
+      "sha1": "1f9ffb9981ee8cc365b1ab1f1370421d62a36301"
+    },
+    {
+      "path": "src/fonts/lobster_bold.ttf",
+      "sha1": "22d16751379386a58202275f3cfcf9e51bc32a80"
+    },
+    {
+      "path": "src/fonts/lobster_bold_italic.ttf",
+      "sha1": "7191e615e73f4780d951913f1a90fd0ea5a0deac"
+    },
+    {
+      "path": "src/fonts/lobster_italic.ttf",
+      "sha1": "ec156cb8233328a591257a69bfa6ba99b2a0cd5f"
+    },
+    {
+      "path": "src/fonts/opensans_bold.ttf",
+      "sha1": "266b36edacf112b480a28f0f5acbbe0ebc01b18f"
+    },
+    {
+      "path": "src/fonts/opensans_bold_italic.ttf",
+      "sha1": "1c28f4b03ffb9b570875af6e0ab5cdada653d61b"
+    },
+    {
+      "path": "src/fonts/opensans_extra_bold.ttf",
+      "sha1": "0659ec1c121d8dc76d52cd6e321317c6f625ad9c"
+    },
+    {
+      "path": "src/fonts/opensans_extra_bold_italic.ttf",
+      "sha1": "dcb984448cecb486cb5c40eabb573983d450d31c"
+    },
+    {
+      "path": "src/fonts/opensans_italic.ttf",
+      "sha1": "8eeed9e71e4f905f8421455810c8f9cebf96aa61"
+    },
+    {
+      "path": "src/fonts/opensans_light.ttf",
+      "sha1": "a5cb6aa02a978571be6ccb861bf500fec6a92914"
+    },
+    {
+      "path": "src/fonts/opensans_light_italic.ttf",
+      "sha1": "3feaf2bb60c73d74a4616f64babf45ee27c1b8a1"
+    },
+    {
+      "path": "src/fonts/opensans_medium.ttf",
+      "sha1": "8fe852635316327356ca73b315e7820582fddf9a"
+    },
+    {
+      "path": "src/fonts/opensans_medium_italic.ttf",
+      "sha1": "7f6ee3fe381560b5eaba8da1729697fdd6cad973"
+    },
+    {
+      "path": "src/fonts/opensans_regular.ttf",
+      "sha1": "73b8e80d4ff1cf32806a12f296754819c17d4eff"
+    },
+    {
+      "path": "src/fonts/opensans_semi_bold.ttf",
+      "sha1": "3df643fd98caf2f73b816ce98580d5716581f9d1"
+    },
+    {
+      "path": "src/fonts/opensans_semi_bold_italic.ttf",
+      "sha1": "e3cfce17cf5f4b9a549d8370e5fbf9509d56b1d3"
+    }
+  ]
+}
