@@ -3,6 +3,9 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import { Provider } from 'react-redux';
+import { store } from '../redux/store'
+
 import {color} from '../constants';
 import Home from './home';
 import Camera from './camera';
@@ -34,13 +37,16 @@ const screenOptions = ({route}) => ({
 
 export default function App() {
     return (
-        <NavigationContainer>
-            <Tab.Navigator screenOptions={screenOptions}>
-                <Tab.Screen name="Trang chủ">{ () => <Home /> }</Tab.Screen>
-                <Tab.Screen name="Camera">{ () => <Camera /> }</Tab.Screen>
-                <Tab.Screen name="Cài đặt">{ () => <Settings /> }</Tab.Screen>
-            </Tab.Navigator>
-        </NavigationContainer>
+        <Provider store={store}>
+            <NavigationContainer>
+                <Tab.Navigator screenOptions={screenOptions}>
+                    <Tab.Screen name="Trang chủ">{ () => <Home /> }</Tab.Screen>
+                    <Tab.Screen name="Camera">{ () => <Camera /> }</Tab.Screen>
+                    <Tab.Screen name="Cài đặt">{ () => <Settings /> }</Tab.Screen>
+                </Tab.Navigator>
+            </NavigationContainer>
+        </Provider>
+        
     );
 }
 

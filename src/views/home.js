@@ -2,8 +2,13 @@ import * as React from 'react';
 import {Text, View, TouchableOpacity, StatusBar, Image, ScrollView, ActivityIndicator, RefreshControl} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { updateGrade } from '../redux/actions/update';
 
 import {color} from '../constants';
+import { useIsFocused } from '@react-navigation/native';
 
 function DetailsScreen() {
     return (
@@ -31,29 +36,70 @@ function GradeButton(props) {
 
 
 function ModalScreen({ navigation }) {
-    const [grades, setGrades] = React.useState([]);
-    const [chooseGrade, setChooseGrade] = React.useState('Lớp 12');
+    // const info = useSelector((state) => state.personalInfo)
+    // const dispatch = useDispatch();
+    const [gradesDESC, setGradesDESC] = React.useState([]);
+
+    const [choose, setChoose] = React.useState();
+    const getChooseGrade = async () => {
+        try {
+            const value = await AsyncStorage.getItem('@grade')
+            if(value !== null) {
+                setChoose(value);
+            }
+        } catch(e) {
+            console.log(e)
+        }
+    }
+
+    const [chooseGrade, setChooseGrade] = React.useState("Lớp 12");
+
+    const storeGrade = async (value) => {
+        try {
+            await AsyncStorage.setItem('@grade', value)
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
     React.useEffect(() => {
-        getGrades();
+        getGradesDESC();
+        getChooseGrade();
     }, [])
 
-    const getGrades = () => {
-        Axios.get(`http://127.0.0.1:8000/api/grades`)
+    const truefalse = (gradeee) => {
+        if(gradeee === choose) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    const getGradesDESC = () => {
+        Axios.get(`http://127.0.0.1:8000/api/gradesDESC`)
         .then(res => {
-            setGrades(res.data);
+            setGradesDESC(res.data);
         })
         .catch(error => console.log(error));
     }
 
-    const [gradeNames, setGradeNames] = React.useState([
-        {name: 'Lớp 12', isSelected: true}, {name: 'Lớp 11', isSelected: false},
-        {name: 'Lớp 10', isSelected: false}, {name: 'Lớp 9', isSelected: false},
-        {name: 'Lớp 8', isSelected: false}, {name: 'Lớp 7', isSelected: false},
-        {name: 'Lớp 6', isSelected: false}, {name: 'Lớp 5', isSelected: false},
-        {name: 'Lớp 4', isSelected: false}, {name: 'Lớp 3', isSelected: false},
-        {name: 'Lớp 2', isSelected: false},
-    ])
+    const [gradeNames, setGradeNames] = React.useState([])
+    
+    {gradesDESC.map(grade => {
+        const found = gradeNames.find(obj => {
+            return obj.name === grade.name_grade;
+        });
+        
+        if(found === undefined) {
+            gradeNames.push({
+                name: grade.name_grade, isSelected: truefalse(grade.name_grade)
+            },)
+        } else {
+            return gradesDESC;
+        }
+    })}
+
+    
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white'}}>
@@ -120,7 +166,9 @@ function ModalScreen({ navigation }) {
                     <TouchableOpacity 
                         style={{width: "85%", height: '60%', borderRadius:100, backgroundColor: color.primary, justifyContent:'center', alignItems:'center'}}
                         onPress={() => {
-                            console.log(chooseGrade)
+                            // dispatch(updateGrade(chooseGrade));
+                            storeGrade(chooseGrade);
+                            navigation.goBack();
                         }}
                     >
                         <Text style={{color:'white', fontSize: 15, fontFamily: 'opensans_medium'}}>Xác nhận</Text>
@@ -134,13 +182,32 @@ function ModalScreen({ navigation }) {
 function HomeScreen({navigation}) {
     const [chapters, setChapters] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(true);
+    // const info = useSelector((state) => state.personalInfo)
+    const [chooseGrade, setChooseGrade] = React.useState("Lớp 12");
+    const isFocused = useIsFocused();
+
+    const getChooseGrade = async () => {
+        try {
+            const value = await AsyncStorage.getItem('@grade')
+            if(value !== null) {
+                setChooseGrade(value);
+            }
+        } catch(e) {
+            console.log(e)
+        }
+    }
 
     React.useEffect(() => {
         getChapters();
+        getChooseGrade();
     }, [])
 
+    React.useEffect(() => {
+        getChooseGrade();
+    }, [isFocused])
+
     const getChapters = () => {
-        Axios.get(`http://127.0.0.1:8000/api/chapters`)
+        Axios.get(`http://127.0.0.1:8000/api/chapters/1`)
         .then(res => {
             setChapters(res.data);
         })
@@ -175,7 +242,7 @@ function HomeScreen({navigation}) {
                             <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}}
                                 onPress={() => navigation.navigate('MyModal')}
                             >
-                                <Text style={{color: color.primary_black, fontSize: 15, fontFamily: 'opensans_bold', width: '90%'}}>Lớp 12</Text>
+                                <Text style={{color: color.primary_black, fontSize: 15, fontFamily: 'opensans_bold', width: '90%'}}>{chooseGrade}</Text>
                                 <Image style={{height: 15, width: 15}} source={require('../images/arrow-point-to-right.png')} />
                             </TouchableOpacity>
                         </View>
@@ -184,13 +251,13 @@ function HomeScreen({navigation}) {
             </View>
 
             <ScrollView style={{width: '100%', height: '88%', marginTop: '8.3%'}} refreshControl={
-                <RefreshControl efreshing={isLoading} onRefresh={getChapters} colors={[color.primary]} tintColor={color.primary} />
+                <RefreshControl refreshing={isLoading} onRefresh={getChapters} colors={[color.primary]} tintColor={color.primary} />
             }>
                 <Text style={{color: color.primary, fontSize: 16.5, fontFamily: 'opensans_bold', marginTop: 20, marginStart: 20, marginBottom: 15}}>Danh sách các chương</Text>
 
-                {isLoading ? <ActivityIndicator/> : chapters.map((item) => {
+                {chapters.map((chapter) => {
                     return (
-                        <View key={item.id_chapter} style={{width: '100%', height: 95, backgroundColor: color.while, paddingStart: 20, paddingVertical: 10, paddingEnd: 20, marginBottom: 1}}>
+                        <View key={chapter.id_chapter} style={{width: '100%', height: 95, backgroundColor: color.while, paddingStart: 20, paddingVertical: 10, paddingEnd: 20, marginBottom: 1}}>
                             <TouchableOpacity 
                                 style={{width: '100%', height: '100%', backgroundColor: color.while, justifyContent: 'center', flexDirection: 'row' }}
                                 onPress={() => {
@@ -204,7 +271,7 @@ function HomeScreen({navigation}) {
                                 <View style={{width: '85%', height: '100%'}}>
                                     <View style={{width: '100%', height: '63%', justifyContent: 'center'}}>
                                         <Text style={{color: color.primary_black, fontSize: 16, fontFamily: 'opensans_bold'}}>
-                                            {item.name_chapter}
+                                            {chapter.name_chapter}
                                         </Text>
                                     </View>
                                     <View style={{width: '100%', height: '37%', flexDirection: 'row', paddingTop: 3}}>
