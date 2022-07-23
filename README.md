@@ -12,7 +12,9 @@ https://github.com/ilyouu/laravel-cdn-solve-math-excercises     # and run: php a
 https://github.com/ilyouu/laravel-solve-math-exercises          # and run: php artisan serve 
 
 # fix TypeError: Network request failed
-adb reverse tcp:8000 tcp:8000
+adb reverse tcp:8080 tcp:8080
+
+yarn android
 ```
 
 ## Dev: Phan Văn Bằng
