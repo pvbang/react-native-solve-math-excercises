@@ -5,5 +5,6 @@ export default {
     primary_black: '#3b3b3b',
     white_primary: '#e5f8ff',
     while: '#FFFFFF',
-    gray: '#d1d1d1'
+    gray: '#d1d1d1',
+    primary_background: '#f9f9f9',
 }
